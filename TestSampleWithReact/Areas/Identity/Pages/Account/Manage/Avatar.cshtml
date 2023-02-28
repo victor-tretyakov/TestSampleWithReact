@@ -1,0 +1,29 @@
+﻿@page
+@model AvatarModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Avatar;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <img src="data:image/*;base64,@Model.AvatarSrc" alt="avatar" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
+             <div class="form-floating mb-3">
+                <input type="file" accept=".jpg,.png,.bmp,.svg" name="postedFile" class="form-control" placeholder="Please choose your avatar." />
+                <label class="form-label" for="postedFile">Avatar</label>
+            </div>
+            <input type="submit" id="update-profile-button" class="w-100 btn btn-lg btn-primary" value="Upload" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -24,7 +24,20 @@ export class AuthorizeService {
     await this.ensureUserManagerInitialized();
     const user = await this.userManager.getUser();
     return user && user.profile;
-  }
+    }
+
+    async isInAdminRole() {
+        await this.ensureUserManagerInitialized();
+        const user = await this.userManager.getUser();
+
+        const token = user && user.access_token
+
+        const response = await fetch('api/v1/users/isAdmin', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        });
+
+        return response.ok === true;
+    }
 
   async getAccessToken() {
     await this.ensureUserManagerInitialized();

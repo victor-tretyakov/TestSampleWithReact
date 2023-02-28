@@ -1,4 +1,4 @@
-namespace TestSampleWithReact
+namespace TestSampleWithReact.Models
 {
     public class WeatherForecast
     {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using TestSampleWithReact.Data;
 using TestSampleWithReact.Models;
+using TestSampleWithReact.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +15,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TestSampleWithReact.Models;
 using TestSampleWithReact.Services;
 
@@ -48,9 +49,18 @@ namespace TestSampleWithReact.Controllers
             return Ok(Convert.ToBase64String(await _userService.GetAvatarByIdAsync(userId)));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUserById(string userId)
         {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var currentUserId = claim != null ? claim.Value : null;
+
+            if (currentUserId == userId)
+            {
+                return BadRequest("Trying to delete yourself.");
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
